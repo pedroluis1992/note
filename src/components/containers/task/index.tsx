@@ -1,6 +1,5 @@
 import React from "react";
 import Card from "../../organisms/Card";
-import Theme from "../../theme/theme";
 
 const Tasks = (props: any) => {
 	return (
@@ -13,6 +12,7 @@ const Tasks = (props: any) => {
 					text="With supporting text below as a natural lead-in to additional content."
 					buttonText={"Ver"}
 					footer={"2 days ago"}
+					background={"blue"}
 				/>
 			</div>
 		</>

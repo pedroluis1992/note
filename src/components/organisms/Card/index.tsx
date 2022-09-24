@@ -16,15 +16,16 @@ interface CardProps {
 	title?: string;
 	text: string;
 	buttonText?: any;
+	background?: any;
 }
 
 const StyledMBDCard = styled(MDBCard)`
-${props => `1px solid ${console.log(props.theme)}`};
-	background: salmon;
+	${props => `1px solid ${console.log(props)}`};
+	${props => `background: ${props.background}`};
 `
-const Card = ({ footer, header, title, text, buttonText }: CardProps) => {
+const Card = ({ footer, header, title, text, buttonText, background }: CardProps) => {
 	return (
-		<StyledMBDCard alignment='center'>
+		<StyledMBDCard alignment='center' background={background}>
 				{
 					!!header && 
 					<MDBCardHeader>{header}</MDBCardHeader>
