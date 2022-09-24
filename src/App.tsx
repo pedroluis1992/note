@@ -9,6 +9,9 @@ import Task from './components/containers/task';
 import 'mdb-react-ui-kit/dist/css/mdb.min.css'
 import Theme from './components/theme/theme';
 import { MDBCollapse, MDBContainer, MDBIcon, MDBNavbar, MDBNavbarItem, MDBNavbarLink, MDBNavbarNav, MDBNavbarToggler } from 'mdb-react-ui-kit';
+import { withAuthenticator } from '@aws-amplify/ui-react'
+import { AmplifySignOut } from '@aws-amplify/ui-react';
+
 function App() {
   const [showBasic, setShowBasic] = useState(true);
 
@@ -25,7 +28,7 @@ function App() {
             >
               <MDBIcon fas icon='bars' />
             </MDBNavbarToggler>
-            <MDBCollapse show={true}>
+            {/* <MDBCollapse show={true}> */}
               <MDBNavbarNav left className='mb-2 mb-lg-0'>
                 <MDBNavbarItem active>
                   <MDBNavbarLink aria-current='page' href='#'>
@@ -39,7 +42,8 @@ function App() {
                   <Link to="/users">Users</Link>
                 </MDBNavbarLink>
               </MDBNavbarNav>
-            </MDBCollapse>
+            {/* </MDBCollapse> */}
+            <AmplifySignOut />
           </MDBContainer>
         </MDBNavbar>
         <Routes>
@@ -53,4 +57,4 @@ function App() {
   );
 }
 
-export default App;
+export default withAuthenticator(App);;
