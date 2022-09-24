@@ -1,25 +1,40 @@
 import React from 'react';
-import logo from './logo.svg';
 import './App.css';
-
+import {
+  BrowserRouter as Router,
+  Link
+} from "react-router-dom";
+import { Routes, Route } from 'react-router-dom';
+import Task from './components/containers/task';
+import 'mdb-react-ui-kit/dist/css/mdb.min.css'
+import Theme from './components/theme/theme';
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <Theme>
+      <Router>
+        <div>
+          <nav>
+            <ul>
+              <li>
+                <Link to="/">Home</Link>
+              </li>
+              <li>
+                <Link to="/about">About</Link>
+              </li>
+              <li>
+                <Link to="/users">Users</Link>
+              </li>
+            </ul>
+          </nav>
+          <Routes>
+            <Route path="/about" element={<Task />} />
+            <Route path="/users" element={<h1>Users</h1>} />
+            <Route path="/" element={<h1>Home</h1>} />
+          </Routes>
+        </div>
+      </Router>
+    </Theme>
+
   );
 }
 
