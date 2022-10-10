@@ -5,12 +5,13 @@ import {
   Link
 } from "react-router-dom";
 import { Routes, Route } from 'react-router-dom';
-import Task from './components/containers/task';
 import 'mdb-react-ui-kit/dist/css/mdb.min.css'
 import Theme from './components/theme/theme';
 import { MDBCollapse, MDBContainer, MDBIcon, MDBNavbar, MDBNavbarItem, MDBNavbarLink, MDBNavbarNav, MDBNavbarToggler } from 'mdb-react-ui-kit';
 import { withAuthenticator } from '@aws-amplify/ui-react'
+import Tasks from './components/containers/tasks';
 import { AmplifySignOut } from '@aws-amplify/ui-react';
+import Task from './components/containers/task';
 
 function App() {
   const [showBasic, setShowBasic] = useState(true);
@@ -36,7 +37,7 @@ function App() {
                   </MDBNavbarLink>
                 </MDBNavbarItem>
                 <MDBNavbarLink aria-current='page' href='#'>
-                  <Link to="/about">Notas</Link>
+                  <Link to="/tasks">Notas</Link>
                 </MDBNavbarLink>
                 <MDBNavbarLink aria-current='page' href='#'>
                   <Link to="/users">Users</Link>
@@ -47,7 +48,8 @@ function App() {
           </MDBContainer>
         </MDBNavbar>
         <Routes>
-          <Route path="/about" element={<Task />} />
+          <Route path="/task/:id" element={<Task />} />
+          <Route path="/tasks" element={<Tasks />} />
           <Route path="/users" element={<h1>Users</h1>} />
           <Route path="/" element={<h1>Home</h1>} />
         </Routes>
