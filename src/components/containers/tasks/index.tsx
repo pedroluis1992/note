@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { API, Storage } from 'aws-amplify';
+import { API, Storage, Auth, graphqlOperation } from 'aws-amplify';
 import { useNavigate, } from "react-router-dom";
 import { listNotes } from '../../../graphql/queries';
 import { createNote as createNoteMutation, deleteNote as deleteNoteMutation } from '../../../graphql/mutations';
@@ -18,7 +18,16 @@ const Tasks = (props: any) => {
   }, []);
 
   async function fetchNotes() {
-		const apiData: any = await API.graphql({ query: listNotes });
+	const user = await Auth.currentAuthenticatedUser({
+			bypassCache: false  // Optional, By default is false. If set to true, this call will send a request to Cognito to get the latest user data
+	})
+		const apiData: any = await API.graphql(graphqlOperation(listNotes, {
+			filter: {
+					userId: {
+							eq: user.attributes.sub
+					}
+			}
+	}));
 		const notesFromAPI = apiData.data.listNotes.items;
 		await Promise.all(notesFromAPI.map(async (note: { image: string; }) => {
 			if (note.image) {
@@ -39,8 +48,11 @@ const Tasks = (props: any) => {
 	}
 
   async function createNote() {
-    if (!formData.name || !formData.description) return;
-  	await API.graphql({ query: createNoteMutation, variables: { input: formData } });
+		const user = await Auth.currentAuthenticatedUser({
+				bypassCache: false  // Optional, By default is false. If set to true, this call will send a request to Cognito to get the latest user data
+		})
+		if (!formData.name || !formData.description || !user.attributes) return;
+  	await API.graphql({ query: createNoteMutation, variables: { input: {...formData, userId: user.attributes.sub } } });
   	if (formData.image) {
     	const image = await Storage.get(formData.image);
     	formData.image = image;
