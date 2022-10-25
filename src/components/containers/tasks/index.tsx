@@ -5,12 +5,14 @@ import { listNotes } from '../../../graphql/queries';
 import { createNote as createNoteMutation, deleteNote as deleteNoteMutation } from '../../../graphql/mutations';
 
 import Card from "../../organisms/Card";
+import { Drawer, TextareaAutosize, TextField } from "@mui/material";
 
 const initialFormState = { name: '', description: '' }
 
 const Tasks = (props: any) => {
   const [notes, setNotes] = useState<any | null>([]);
   const [formData, setFormData] = useState<any | null>(initialFormState);
+	const [openForm, setOpenForm] = useState<boolean>(false);
   const navigate = useNavigate();
 
 	useEffect(() => {
@@ -57,6 +59,7 @@ const Tasks = (props: any) => {
     	const image = await Storage.get(formData.image);
     	formData.image = image;
   	}
+		setOpenForm(false);
   	setNotes([ ...notes, formData ]);
   	setFormData(initialFormState);
   }
@@ -82,22 +85,7 @@ const Tasks = (props: any) => {
 	return (
 		<>
 			<h1>Notas</h1>
-			<input
-        onChange={e => setFormData({ ...formData, 'name': e.target.value})}
-        placeholder="Note name"
-        value={formData.name}
-      />
-      <input
-        onChange={e => setFormData({ ...formData, 'description': e.target.value})}
-        placeholder="Note description"
-        value={formData.description}
-				/>
-			<input
-  			type="file"
-  			onChange={onChange}
-			/>
-
-      <button onClick={createNote}>Create Note</button>
+      <button onClick={() => setOpenForm(true)}>Create Note</button>
 			<div style={{ height: "100%", margin: "20px", display: "flex", justifyContent: "space-between", flexWrap: "wrap" }}>
 				{notes.map((note:any) => {
 					return (
@@ -116,6 +104,32 @@ const Tasks = (props: any) => {
 					)
 					})}
 			</div>
+			<Drawer
+				anchor={"right"}
+				open={openForm}
+				onClose={() => setOpenForm(!openForm)}
+			>
+			 <TextField
+					value={formData.name}
+					onChange={e => setFormData({ ...formData, 'name': e.target.value})}
+          label="Name"
+          type="text"
+          variant="standard"
+        />
+				<TextareaAutosize
+					maxRows={4}
+					aria-label="maximum height"
+					onChange={e => setFormData({ ...formData, 'description': e.target.value})}
+					placeholder="Description"
+					value={formData.description}
+					style={{ maxWidth: 250 }}
+				/>
+			<input
+  			type="file"
+  			onChange={onChange}
+			/>
+			<button onClick={createNote}>Guardar</button>
+    	</Drawer>
 		</>
 	)
 }

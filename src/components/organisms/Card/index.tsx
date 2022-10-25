@@ -1,14 +1,10 @@
 import React from "react";
-import {
-	MDBCard,
-	MDBCardBody,
-	MDBCardTitle,
-	MDBCardText,
-	MDBCardHeader,
-	MDBCardFooter,
-	MDBBtn
-} from 'mdb-react-ui-kit';
 import styled from "styled-components";
+import Card from '@mui/material/Card';
+import CardHeader from '@mui/material/CardHeader';
+import CardContent from '@mui/material/CardContent';
+import Typography from '@mui/material/Typography';
+import Button from "@mui/material/Button";
 
 interface CardProps {
 	footer?: any;
@@ -23,11 +19,10 @@ interface CardProps {
 	goToDetail?: any;
 }
 
-const StyledMBDCard = styled(MDBCard)`
+const StyledMBDCard = styled(Card)`
 	width: 300px;
 	margin-bottom: 20px;
 	${props => `1px solid ${console.log(props)}`};
-	${props => `background: ${props.background}`};
 `
 const StyledWrapperImage = styled.div`
 	height: 100px;
@@ -36,16 +31,16 @@ const StyledWrapperImage = styled.div`
 	margin-bottom: 20px;
 `;
 
-const Card = ({ footer, header, title, text, buttonText, background, buttonDelete, removeCard, image, goToDetail }: CardProps) => {
+const CardComponent = ({ footer, header, title, text, buttonText, background, buttonDelete, removeCard, image, goToDetail }: CardProps) => {
 	return (
-		<StyledMBDCard alignment='center' background={background}>
+		<StyledMBDCard>
 				{
 					!!header && 
-					<MDBCardHeader>{header}</MDBCardHeader>
+					<CardHeader>{header}</CardHeader>
 				}
-				<MDBCardBody>
-					<MDBCardTitle>{title}</MDBCardTitle>
-					<MDBCardText>{text}</MDBCardText>
+				<CardContent>
+					<Typography>{title}</Typography>
+					<Typography>{text}</Typography>
 					{
 						<StyledWrapperImage>
 							{image && 
@@ -55,19 +50,19 @@ const Card = ({ footer, header, title, text, buttonText, background, buttonDelet
       		}
 					{
 						!!buttonText &&
-						<MDBBtn  style={{marginRight: "10px"}} onClick={() => goToDetail()}>{buttonText}</MDBBtn>
+						<Button variant="contained"  style={{marginRight: "10px"}} onClick={() => goToDetail()}>{buttonText}</Button>
 					}
 					{
 						!!buttonDelete &&
-						<MDBBtn onClick={() => removeCard()}>{buttonDelete}</MDBBtn>
+						<Button onClick={() => removeCard()}>{buttonDelete}</Button>
 					}
-				</MDBCardBody>
+				</CardContent>
 				{
 					!!footer &&
-					<MDBCardFooter className='text-muted'>{footer}</MDBCardFooter>
+					<div className='text-muted'>{footer}</div>
 				}
 		</StyledMBDCard>
 	)
 }
 
-export default Card;
+export default CardComponent;
