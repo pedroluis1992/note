@@ -22,8 +22,13 @@ interface CardProps {
 const StyledMBDCard = styled(Card)`
 	width: 300px;
 	margin-bottom: 20px;
-	${props => `1px solid ${console.log(props)}`};
 `
+
+// const StyledMBDCard = styled(Card)`
+// 	width: 300px;
+// 	margin-bottom: 20px;
+// 	${props => `1px solid ${console.log(props)}`};
+// `
 const StyledWrapperImage = styled.div`
 	height: 100px;
 	width: 100px;

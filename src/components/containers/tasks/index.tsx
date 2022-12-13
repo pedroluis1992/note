@@ -3,9 +3,11 @@ import { API, Storage, Auth, graphqlOperation } from 'aws-amplify';
 import { useNavigate, } from "react-router-dom";
 import { listNotes } from '../../../graphql/queries';
 import { createNote as createNoteMutation, deleteNote as deleteNoteMutation } from '../../../graphql/mutations';
-
+import * as Yup from 'yup';
 import Card from "../../organisms/Card";
 import { Drawer, TextareaAutosize, TextField } from "@mui/material";
+import { connect } from "react-redux";
+import { Formik, useFormik } from "formik";
 
 const initialFormState = { name: '', description: '' }
 
@@ -18,6 +20,10 @@ const Tasks = (props: any) => {
 	useEffect(() => {
     fetchNotes();
   }, []);
+
+	useEffect(() => {
+		createNote()
+	}, [createNote, formData]);
 
   async function fetchNotes() {
 	const user = await Auth.currentAuthenticatedUser({
@@ -82,6 +88,22 @@ const Tasks = (props: any) => {
 		return `${day}/${month}/${year}`
 	}
 
+
+	const formik = useFormik({
+		initialValues: {
+			name: '',
+			description: '',
+			file: '',
+		},
+		onSubmit: values => {
+			setFormData({ ...values })
+		},
+		validationSchema: Yup.object({ 
+			name: Yup.string().required(),
+			description: Yup.string().required(),
+		}),
+	});
+	
 	return (
 		<>
 			<h1>Notas</h1>
@@ -109,29 +131,46 @@ const Tasks = (props: any) => {
 				open={openForm}
 				onClose={() => setOpenForm(!openForm)}
 			>
-			 <TextField
-					value={formData.name}
-					onChange={e => setFormData({ ...formData, 'name': e.target.value})}
-          label="Name"
-          type="text"
-          variant="standard"
-        />
-				<TextareaAutosize
-					maxRows={4}
-					aria-label="maximum height"
-					onChange={e => setFormData({ ...formData, 'description': e.target.value})}
-					placeholder="Description"
-					value={formData.description}
-					style={{ maxWidth: 250 }}
-				/>
-			<input
-  			type="file"
-  			onChange={onChange}
-			/>
-			<button onClick={createNote}>Guardar</button>
+						<form onSubmit={formik.handleSubmit}>
+								<TextField
+									value={formik.values.name}
+									onBlur={formik.handleBlur}
+									onChange={formik.handleChange}
+										// setFormData({ ...formData, 'name': e.target.value})}
+									label="name"
+									id="name"
+									type="text"
+									variant="standard"
+							 />
+							  {formik.errors.name && formik.touched.name && formik.errors.name}
+
+							 <TextareaAutosize
+									maxRows={4}
+									id="description"
+									aria-label="maximum height"
+									//  onChange={e => setFormData({ ...formData, 'description': e.target.value})}
+									onChange={formik.handleChange}
+									placeholder="Description"
+									value={formik.values.description}
+									onBlur={formik.handleBlur}
+									style={{ maxWidth: 250 }}
+							 />
+							   {formik.errors.description && formik.touched.description && formik.errors.description}
+							<input
+								type="file"
+								onChange={onChange}
+							/>
+							<button type="submit">Guardar</button>
+						</form>
+
     	</Drawer>
 		</>
 	)
 }
 
-export default Tasks;
+const mapStateToProps = (state: any) => {
+	return {
+		results: state.results,
+	}
+}
+export default  connect(mapStateToProps)(Tasks);
