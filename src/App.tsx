@@ -58,8 +58,8 @@ function App() {
                   textDecoration: 'none',
                 }}
               >
-                LOGO
-              </Typography>
+                <AmplifySignOut />
+                </Typography>
               {
                 menuItems.map((item) => {
                   return (

@@ -52,7 +52,7 @@ const Task = () => {
               <Typography variant="h4" gutterBottom>{task.name.toUpperCase()}</Typography>
               {
                 task.image &&
-                  <img src={task.image} alt="Item" />
+                  <img src={task.image} style={{width: 100, height: 120}} alt="Item" />
               }
               <Typography variant="body1" gutterBottom>
                 {task.description}
