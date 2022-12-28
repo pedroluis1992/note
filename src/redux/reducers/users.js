@@ -1,7 +1,6 @@
-
-function reducer(state = [], { type, payload }) {
+function reducer(state = [], { type } = {}) {
   switch (type) {
-    default: 
+    default:
       return state;
   }
 }
