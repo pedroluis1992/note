@@ -1,15 +1,14 @@
-
-function reducer(state = [], { type, payload }) {
+function reducer(state = [], { type } = {}) {
   switch (type) {
-    case "findResults" : {
+    case 'findResults': {
       return [
         {
-          id: "id",
-          text: "asdas"
-        }
-      ]
+          id: 'id',
+          text: 'asdas',
+        },
+      ];
     }
-    default: 
+    default:
       return state;
   }
 }
